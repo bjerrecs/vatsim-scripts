@@ -4,8 +4,8 @@ $config_arrival = "EGLL"
 $config_invallid_squak
 
 # Clear txt files
-Remove-Item .\departures.txt
-Remove-Item .\arrivals.txt
+Remove-Item .\atc_departures.txt
+Remove-Item .\atc_arrivals.txt
 
 $request = "https://data.vatsim.net/v3/vatsim-data.json"
 $flight_plan = (Invoke-WebRequest $request | ConvertFrom-Json).pilots | Select-Object flight_plan, callsign, altitude
@@ -19,13 +19,13 @@ foreach ($plan in $flight_plan) {
 
     if (($departure -eq $config_departure) -and ($altitude -le "1500")) {
         $departures = "$callsign $model $departure/$arrival"
-        Add-Content .\departures.txt $departures
+        Add-Content .\atc_departures.txt $departures
         Write-Host $departures
     }
 
     if (($arrival -eq $config_arrival) -and ($altitude -ge "1500")) {
         $arrivals = "$callsign $model $departure/$arrival"
-        Add-Content .\arrivals.txt $arrivals
+        Add-Content .\atc_arrivals.txt $arrivals
         Write-Host $arrivals
     }
     
